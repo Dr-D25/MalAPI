@@ -27,7 +27,6 @@ void readRegistry(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 
 int main()
 {
-    // Чтение строки "UserName" из ключа HKEY_CURRENT_USER\Software
     readRegistry(HKEY_CURRENT_USER, "Software", "UserName");
 
     return 0;
