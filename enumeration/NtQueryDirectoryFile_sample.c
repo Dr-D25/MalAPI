@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <wchar.h>
 
-// Прототип функции NtQueryDirectoryFile
 typedef NTSTATUS(WINAPI* PFN_NTQUERYDIRECTORYFILE)(HANDLE DirectoryHandle,
                                                     HANDLE Event OPTIONAL,
                                                     PIO_APC_ROUTINE ApcRoutine OPTIONAL,
@@ -31,7 +30,7 @@ void main() {
     HANDLE hDirHandle;
     NTSTATUS status = NtCreateFile(
         &hDirHandle,
-        SYNCHRONIZE | FILE_LIST_DIRECTORY | FILE_READ_ATTRIBUTES, // добавляем нужные права доступа
+        SYNCHRONIZE | FILE_LIST_DIRECTORY | FILE_READ_ATTRIBUTES,
         &objectAttributes,
         &ioStatusBlock,
         NULL,
@@ -44,20 +43,20 @@ void main() {
     );
 
     if (!NT_SUCCESS(status)) {
-        printf("Ошибка открытия каталога: %lx\n", status);
+        printf("ГЋГёГЁГЎГЄГ  Г®ГІГЄГ°Г»ГІГЁГї ГЄГ ГІГ Г«Г®ГЈГ : %lx\n", status);
         return;
     }
 
     HMODULE hNtdll = LoadLibraryW(L"ntdll.dll");
     if (hNtdll == NULL) {
-        printf("Не удалось загрузить библиотеку ntdll.dll\n");
+        printf("ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г§Г ГЈГ°ГіГ§ГЁГІГј ГЎГЁГЎГ«ГЁГ®ГІГҐГЄГі ntdll.dll\n");
         CloseHandle(hDirHandle);
         return;
     }
 
     PFN_NTQUERYDIRECTORYFILE pfnNtQueryDirectoryFile = (PFN_NTQUERYDIRECTORYFILE)GetProcAddress(hNtdll, "NtQueryDirectoryFile");
     if (pfnNtQueryDirectoryFile == NULL) {
-        printf("Не найдена функция NtQueryDirectoryFile!\n");
+        printf("ГЌГҐ Г­Г Г©Г¤ГҐГ­Г  ГґГіГ­ГЄГ¶ГЁГї NtQueryDirectoryFile!\n");
         FreeLibrary(hNtdll);
         CloseHandle(hDirHandle);
         return;
@@ -78,7 +77,7 @@ void main() {
     );
 
     if (!NT_SUCCESS(status)) {
-        printf("Ошибка чтения списка файлов: %lx\n", status);
+        printf("ГЋГёГЁГЎГЄГ  Г·ГІГҐГ­ГЁГї Г±ГЇГЁГ±ГЄГ  ГґГ Г©Г«Г®Гў: %lx\n", status);
         FreeLibrary(hNtdll);
         CloseHandle(hDirHandle);
         return;
