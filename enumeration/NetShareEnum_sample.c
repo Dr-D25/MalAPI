@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <lmapi.h>
 
-// Структура для хранения информации о сетевых ресурсах
 typedef struct _SHARE_INFO_1 {
     LPTSTR shi1_netname;
     DWORD shi1_type;
@@ -27,17 +26,15 @@ void PrintError(const char* message)
 
 int main()
 {
-    // Буфер для результатов перечисления ресурсов
     P_SHARE_INFO_1 pBuffer = NULL;
     DWORD dwEntriesRead = 0;
     DWORD dwTotalEntries = 0;
     DWORD dwResumeHandle = 0;
     NET_API_STATUS nStatus;
 
-    // Загрузка netapi32.dll и получение адреса функции NetShareEnum
     HMODULE hModule = LoadLibrary(TEXT("NETAPI32.DLL"));
     if (!hModule) {
-        PrintError("Ошибка загрузки DLL");
+        PrintError("ГЋГёГЁГЎГЄГ  Г§Г ГЈГ°ГіГ§ГЄГЁ DLL");
         return 1;
     }
 
@@ -45,27 +42,24 @@ int main()
     PFN_NETSHARENUM pfnNetShareEnum = (PFN_NETSHARENUM)GetProcAddress(hModule, "NetShareEnum");
     if (!pfnNetShareEnum) {
         FreeLibrary(hModule);
-        PrintError("Ошибка получения адреса функции");
+        PrintError("ГЋГёГЁГЎГЄГ  ГЇГ®Г«ГіГ·ГҐГ­ГЁГї Г Г¤Г°ГҐГ±Г  ГґГіГ­ГЄГ¶ГЁГЁ");
         return 1;
     }
 
-    // Выполнение перечисления сетевых ресурсов уровня INFO_LEVEL_1
     nStatus = (*pfnNetShareEnum)(NULL, 1, (LPBYTE*)&pBuffer, MAX_PREFERRED_LENGTH, &dwEntriesRead, &dwTotalEntries, &dwResumeHandle);
     if ((nStatus != NERR_Success) && (nStatus != ERROR_MORE_DATA)) {
-        PrintError("Ошибка перечисления ресурсов");
+        PrintError("ГЋГёГЁГЎГЄГ  ГЇГҐГ°ГҐГ·ГЁГ±Г«ГҐГ­ГЁГї Г°ГҐГ±ГіГ°Г±Г®Гў");
         FreeLibrary(hModule);
         return 1;
     }
 
-    // Печать найденных сетевых ресурсов
     for (DWORD i = 0; i < dwEntriesRead; ++i) {
-        printf("Имя ресурса: %S\nТип ресурса: %d\nКомментарий: %S\n\n",
+        printf("Г€Г¬Гї Г°ГҐГ±ГіГ°Г±Г : %S\nГ’ГЁГЇ Г°ГҐГ±ГіГ°Г±Г : %d\nГЉГ®Г¬Г¬ГҐГ­ГІГ Г°ГЁГ©: %S\n\n",
                pBuffer[i].shi1_netname,
                pBuffer[i].shi1_type,
-               pBuffer[i].shi1_remark ? pBuffer[i].shi1_remark : TEXT("<нет комментария>"));
+               pBuffer[i].shi1_remark ? pBuffer[i].shi1_remark : TEXT("<Г­ГҐГІ ГЄГ®Г¬Г¬ГҐГ­ГІГ Г°ГЁГї>"));
     }
 
-    // Освобождение буфера памяти
     NetApiBufferFree(pBuffer);
     FreeLibrary(hModule);
     return 0;
