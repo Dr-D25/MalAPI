@@ -7,7 +7,6 @@ int main() {
     DWORD subKeysCount = 0;
     DWORD valuesCount = 0;
 
-    // HKEY_LOCAL_MACHINE\SOFTWARE
     result = RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE", 0, KEY_READ, &hKey);
     if(result != ERROR_SUCCESS) {
         printf("Error open key: %ld\n", result);
