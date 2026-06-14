@@ -33,7 +33,7 @@ int main()
 
     result = RegOpenKeyExA(
         HKEY_LOCAL_MACHINE,
-        "SOFTWARE",         //указываем ключ
+        "SOFTWARE",
         0,
         KEY_READ | KEY_ENUMERATE_SUB_KEYS,
         &hKey
