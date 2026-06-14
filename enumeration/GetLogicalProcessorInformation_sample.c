@@ -1,7 +1,6 @@
 #include <windows.h>
 #include <stdio.h>
 
-// Типы структуры SYSTEM_LOGICAL_PROCESSOR_INFORMATION необходимы для правильного вывода данных
 typedef struct _SYSTEM_LOGICAL_PROCESSOR_INFORMATION {
     ULONG_PTR ProcessorMask;
     BYTE Relationship;
@@ -25,23 +24,22 @@ void main() {
     BOOL done = FALSE;
     int numRecords;
 
-    // Получаем необходимую длину буфера
     if (!GetLogicalProcessorInformation(NULL, &returnLength)) {
         if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
-            printf("Ошибка при получении длины буфера.\n");
+            printf("ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ ГЇГ®Г«ГіГ·ГҐГ­ГЁГЁ Г¤Г«ГЁГ­Г» ГЎГіГґГҐГ°Г .\n");
         else {
             buffer = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION)malloc(returnLength);
 
             if (buffer == NULL) {
-                printf("Ошибка выделения памяти.\n");
+                printf("ГЋГёГЁГЎГЄГ  ГўГ»Г¤ГҐГ«ГҐГ­ГЁГї ГЇГ Г¬ГїГІГЁ.\n");
                 exit(-1);
             }
 
-            done = GetLogicalProcessorInformation(buffer, &returnLength); // Заполняем буфер информацией
+            done = GetLogicalProcessorInformation(buffer, &returnLength);
 
             if (!done) {
                 free(buffer);
-                printf("Ошибка заполнения буфера информацией.\n");
+                printf("ГЋГёГЁГЎГЄГ  Г§Г ГЇГ®Г«Г­ГҐГ­ГЁГї ГЎГіГґГҐГ°Г  ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГҐГ©.\n");
                 exit(-1);
             }
         }
@@ -52,13 +50,13 @@ void main() {
     for(int i=0; i<numRecords; ++i){
         switch(buffer[i].Relationship){
             case RelationProcessorCore:
-                printf("Информация о ядре:\n");
+                printf("Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї Г® ГїГ¤Г°ГҐ:\n");
                 break;
             case RelationNumaNode:
-                printf("NUMA узел %d\n", buffer[i].NumaNode.Number);
+                printf("NUMA ГіГ§ГҐГ« %d\n", buffer[i].NumaNode.Number);
                 break;
             case RelationCache:
-                printf("Кэш L%d\n", buffer[i].Cache.Level);
+                printf("ГЉГЅГё L%d\n", buffer[i].Cache.Level);
                 break;
             default:
                 printf("Unknown relationship type.\n");
