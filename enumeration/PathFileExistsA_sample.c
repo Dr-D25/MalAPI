@@ -2,17 +2,17 @@
 #include <Shlwapi.h>
 #include <stdio.h>
 
-#pragma comment(lib, "Shlwapi.lib")  // Подключаем библиотеку Shlwapi
+#pragma comment(lib, "Shlwapi.lib")
 
 int main() {
-    const char* pathToCheck = "C:\\example.txt";  // Путь к файлу, который хотим проверить
+    const char* pathToCheck = "C:\\example.txt";
 
-    BOOL exists = PathFileExistsA(pathToCheck);  // Проверяем существование файла
+    BOOL exists = PathFileExistsA(pathToCheck);
 
     if (exists) {
-        printf("Файл '%s' существует.\n", pathToCheck);
+        printf("Г”Г Г©Г« '%s' Г±ГіГ№ГҐГ±ГІГўГіГҐГІ.\n", pathToCheck);
     } else {
-        printf("Файл '%s' не существует.\n", pathToCheck);
+        printf("Г”Г Г©Г« '%s' Г­ГҐ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ.\n", pathToCheck);
     }
 
     return 0;
